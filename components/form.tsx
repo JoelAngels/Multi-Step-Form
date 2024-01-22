@@ -47,14 +47,17 @@ export default function Form() {
 
   type FieldName = keyof Inputs
 
+  // Next Button
   const next = async () => {
     const fields = steps[currentStep].fields
     const output = await trigger(fields as FieldName[], { shouldFocus: true })
 
+    // if their is an errors, put down the correct information
     if (!output) return
 
     if (currentStep < steps.length - 1) {
       if (currentStep === steps.length - 2) {
+        // If this condition is true, it means the user is on the second-to-last step. In this case, it calls an asynchronous function
         await handleSubmit(processForm)()
       }
       setPreviousStep(currentStep)
@@ -62,6 +65,7 @@ export default function Form() {
     }
   }
 
+  //since you validated the steps you can now go back
   const prev = () => {
     if (currentStep > 0) {
       setPreviousStep(currentStep)
@@ -108,6 +112,7 @@ export default function Form() {
 
       {/* Form */}
       <form className='mt-12 py-12' onSubmit={handleSubmit(processForm)}>
+        {/* for each step we are rendering A SECTION INSIDE OF OUR FORM */}
         {currentStep === 0 && (
           <motion.div
             initial={{ x: delta >= 0 ? '50%' : '-50%', opacity: 0 }}
@@ -120,6 +125,9 @@ export default function Form() {
             <p className='mt-1 text-sm leading-6 text-gray-600'>
               Provide your personal details.
             </p>
+
+            {/* Input */}
+
             <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'>
               <div className='sm:col-span-3'>
                 <label
@@ -128,6 +136,7 @@ export default function Form() {
                 >
                   First name
                 </label>
+                {/* Input */}
                 <div className='mt-2'>
                   <input
                     type='text'
@@ -136,6 +145,8 @@ export default function Form() {
                     autoComplete='given-name'
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6'
                   />
+
+                  {/* if their is any errors, they will be a message for it */}
                   {errors.firstName?.message && (
                     <p className='mt-2 text-sm text-red-400'>
                       {errors.firstName.message}
@@ -144,6 +155,8 @@ export default function Form() {
                 </div>
               </div>
 
+              {/* Input 2 */}
+
               <div className='sm:col-span-3'>
                 <label
                   htmlFor='lastName'
@@ -151,6 +164,7 @@ export default function Form() {
                 >
                   Last name
                 </label>
+
                 <div className='mt-2'>
                   <input
                     type='text'
@@ -159,6 +173,9 @@ export default function Form() {
                     autoComplete='family-name'
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6'
                   />
+
+                  {/* if their is any errors, they will be a message for it */}
+
                   {errors.lastName?.message && (
                     <p className='mt-2 text-sm text-red-400'>
                       {errors.lastName.message}
@@ -166,6 +183,8 @@ export default function Form() {
                   )}
                 </div>
               </div>
+
+              {/* Input 2 */}
 
               <div className='sm:col-span-4'>
                 <label
@@ -182,6 +201,9 @@ export default function Form() {
                     autoComplete='email'
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6'
                   />
+
+                  {/* if their is any errors, they will be a message for it */}
+
                   {errors.email?.message && (
                     <p className='mt-2 text-sm text-red-400'>
                       {errors.email.message}
